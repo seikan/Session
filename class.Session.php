@@ -42,13 +42,13 @@ class Session
 
 		$this->sessionId = ($sessionId) ? $sessionId : md5($_SERVER['HTTP_HOST'] . '_session');
 
-		if (isset($_SESSION[$this->sessionId]) && null === ($this->session = json_decode($_SESSION[$this->sessionId], true))) {
+		if (isset($_SESSION[$this->sessionId]) && ($this->session = json_decode($_SESSION[$this->sessionId], true)) === null) {
 			return;
 		}
 
-		$_SESSION[$this->sessionId] = json_encode([
-			'' => '',
-		]);
+		if (!isset($_SESSION[$this->sessionId])) {
+			$_SESSION[$this->sessionId] = json_encode([]);
+		}
 
 		$this->session = json_decode($_SESSION[$this->sessionId], true);
 	}
@@ -73,7 +73,7 @@ class Session
 	{
 		$this->session[$key] = $value;
 
-		if (null === $value) {
+		if ($value === null) {
 			unset($this->session[$key]);
 		}
 
