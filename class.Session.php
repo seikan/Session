@@ -79,6 +79,20 @@ class Session
 
 		$_SESSION[$this->sessionId] = json_encode($this->session);
 	}
+	
+	/**
+	 * Delete a session variable by key.
+	 *
+	 * @param string $key
+	 */
+	public function delete($key)
+	{
+		if(isset($this->session[$key])) {
+			unset($this->session[$key]);
+		}
+		
+		$_SESSION[$this->sessionId] = json_encode($this->session);
+	}
 
 	/**
 	 * Destroy the entire session variables.
